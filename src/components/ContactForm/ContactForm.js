@@ -1,14 +1,12 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
-import contactsActions from '../../redux/contact-actions';
 import styles from './ContactForm.module.css';
 import shortid from 'shortid';
 
 class ContactForm extends Component {
   static propTypes = {
     onSubmit: PropTypes.func.isRequired,
-    existingContactsName: PropTypes.func.isRequired,
+    existingContactsName: PropTypes.array.isRequired,
   };
 
   state = {
@@ -39,8 +37,8 @@ class ContactForm extends Component {
       alert('Name should have more than 3 letters');
     } else {
       this.props.onSubmit({
-        name: name,
-        number: number,
+        name,
+        number,
         id: contactId,
       });
     }
@@ -85,16 +83,4 @@ class ContactForm extends Component {
   }
 }
 
-const getExistingContactsName = allContacts => {
-  return allContacts.map(contact => contact.name.toLowerCase());
-};
-
-const mapStateProps = ({ items }) => ({
-  existingContactsName: getExistingContactsName(items),
-});
-
-const mapDispatchToProps = dispatch => ({
-  onSubmit: data => dispatch(contactsActions.addContact(data)),
-});
-
-export default connect(mapStateProps, mapDispatchToProps)(ContactForm);
+export default ContactForm;
