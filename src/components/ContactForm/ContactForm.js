@@ -20,34 +20,41 @@ class ContactForm extends Component {
     this.setState({ [name]: value });
   };
 
-  handleSubmit = event => {
-    event.preventDefault();
+  handleFormFill = () => {
     const contactId = shortid.generate();
     const { name, number } = this.state;
     const { existingContactsName } = this.props;
     const reviewExistingContactsNames = existingContactsName.includes(
       name.toLowerCase(),
     );
+    const emptyForm = !name || !number;
+    const shortContactName = name.length < 3;
 
     if (reviewExistingContactsNames) {
-      alert(`${name} is already in contacts`);
-    } else if (!name || !number) {
-      alert('Fill the form');
-    } else if (name.length < 3) {
-      alert('Name should have more than 3 letters');
-    } else {
-      this.props.onSubmit({
-        name,
-        number,
-        id: contactId,
-      });
+      return alert(`${name} is already in contacts`);
+    }
+    if (emptyForm) {
+      return alert('Fill the form');
+    }
+    if (shortContactName) {
+      return alert('Name should have more than 3 letters');
     }
 
-    this.reset();
+    this.props.onSubmit({
+      name,
+      number,
+      id: contactId,
+    });
   };
 
   reset = () => {
     this.setState({ name: '', number: '' });
+  };
+
+  handleSubmit = event => {
+    event.preventDefault();
+    this.handleFormFill();
+    this.reset();
   };
 
   render() {

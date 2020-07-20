@@ -1,10 +1,10 @@
 import { connect } from 'react-redux';
 import contactsActions from '../../redux/contact-actions';
+import { getExistingContactsName } from '../../redux/contact-selectors';
+import { bindActionCreators } from 'redux';
 import ContactForm from './ContactForm';
 
-const getExistingContactsName = allContacts => {
-  return allContacts.map(contact => contact.name.toLowerCase());
-};
+console.log(bindActionCreators);
 
 const mapStateProps = ({ items }) => ({
   existingContactsName: getExistingContactsName(items),
